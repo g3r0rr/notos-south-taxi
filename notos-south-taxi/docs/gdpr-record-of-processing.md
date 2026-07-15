@@ -20,14 +20,18 @@
 - Taking the online booking deposit and confirming payment.
 - Notifying the assigned driver so the trip can be performed.
 - Sending the customer a booking confirmation and any update.
+- Measuring website traffic in anonymous, aggregated form (Vercel Web Analytics).
 
 **Legal basis:** performance of the transport contract with the customer,
 Art. 6(1)(b) GDPR. Retention of proof of payment rests on a legal obligation
-under Greek tax law, Art. 6(1)(c).
+under Greek tax law, Art. 6(1)(c). The cookieless website analytics rests on
+legitimate interests, Art. 6(1)(f): understanding traffic with no cookies and
+no persistent or directly identifying data.
 
 ## 2. Categories of data subjects
 
 - Customers who make a booking through the website.
+- Visitors to the website (anonymous, aggregated analytics only).
 
 ## 3. Categories of personal data
 
@@ -51,10 +55,11 @@ discouraged from entering sensitive information in the free-text notes field.
 | CallMeBot | WhatsApp notification to the driver | Name, phone, pickup/drop-off, time, vehicle, price (email deliberately excluded) | Outside EEA (unverified) | **None in place, see section 7** |
 | Geoapify | Address autocomplete (custom addresses only) | Partial address text entered by the customer | EU | Provider terms |
 | Google Maps | Distance calculation (custom addresses only) | Address text | US | Standard Contractual Clauses / adequacy |
+| Vercel Web Analytics | Anonymous, aggregated visitor statistics (cookieless) | Page views, referrer, device/country derived transiently from IP + user-agent; no cookies, no persistent identifier stored | US | Standard Contractual Clauses / provider DPA |
 
 ## 5. Transfers to third countries
 
-Some processors (notably Resend and Google) are based outside the EEA, mainly in
+Some processors (notably Resend, Google, and Vercel) are based outside the EEA, mainly in
 the United States. Where personal data is transferred outside the EEA, the intended
 safeguard is the European Commission's Standard Contractual Clauses or an adequacy
 decision, as applicable to each provider. CallMeBot is the exception, see section 7.
