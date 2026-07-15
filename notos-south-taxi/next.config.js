@@ -7,9 +7,12 @@ const withNextIntl = createNextIntlPlugin('./i18n.ts');
 // loads: Google Fonts (fonts.googleapis.com stylesheet + fonts.gstatic.com font
 // files, both referenced from app/layout.tsx) and Vercel Analytics (served
 // first-party from /_vercel/* on Vercel, with va.vercel-scripts.com /
-// vitals.vercel-insights.com as CDN fallbacks). img-src allows https: for the
-// hotlinked Unsplash destination photos. Viva Wallet, Geoapify and Google Maps
-// are only ever called server-side, so they need no browser-facing directives.
+// vitals.vercel-insights.com as CDN fallbacks). Images are all self-hosted
+// (/photos, /brand) except one hotlinked Unsplash hero-card background on the
+// homepage, so img-src is scoped to 'self' plus that single host; self-host
+// that image and it can drop to "'self' data:". Viva Wallet, Geoapify and
+// Google Maps are only ever called server-side, so they need no browser
+// directives.
 //
 // If you add a client-side script, embed, font host, image origin, or an API the
 // browser must reach, add its origin to the matching directive here or it will be
@@ -21,7 +24,7 @@ const csp = [
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  "img-src 'self' data: https:",
+  "img-src 'self' data: https://images.unsplash.com",
   "font-src 'self' https://fonts.gstatic.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
@@ -47,12 +50,6 @@ const nextConfig = {
   // server logs. error/warn are kept for genuine error monitoring.
   compiler: {
     removeConsole: { exclude: ['error', 'warn'] }
-  },
-  images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'source.unsplash.com' }
-    ]
   },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
