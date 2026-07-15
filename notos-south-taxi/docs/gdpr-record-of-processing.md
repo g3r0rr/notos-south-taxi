@@ -46,7 +46,7 @@ discouraged from entering sensitive information in the free-text notes field.
 | Processor | Purpose | Personal data shared | Location | Transfer safeguard |
 |-----------|---------|----------------------|----------|--------------------|
 | Viva Wallet | Payment processing | Name, email, phone, payment reference | EEA (Greece) | N/A (within EEA) |
-| Upstash | Booking database (KV) | Full booking record | Check active region | Verify; SCCs if non-EEA |
+| Upstash | Booking database (KV) | Full booking record | EEA | N/A (within EEA) |
 | Resend | Confirmation + driver notification email | Full booking record incl. email | US | Standard Contractual Clauses / provider DPA |
 | CallMeBot | WhatsApp notification to the driver | Name, phone, pickup/drop-off, time, vehicle, price (email deliberately excluded) | Outside EEA (unverified) | **None in place, see section 7** |
 | Geoapify | Address autocomplete (custom addresses only) | Partial address text entered by the customer | EU | Provider terms |
