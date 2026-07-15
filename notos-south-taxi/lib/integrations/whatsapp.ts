@@ -52,7 +52,10 @@ function formatBookingMessage(b: BookingPayload, isUpdate = false): string {
     ``,
     `*Πελάτης:* ${b.customerName}`,
     `*Τηλέφωνο:* ${b.customerPhone}`,
-    `*Email:* ${b.customerEmail}`,
+    // Customer email is intentionally omitted here: the driver doesn't need it
+    // to perform the pickup, and it keeps personal data out of the third-party
+    // CallMeBot relay (GDPR data minimisation). The full record, including
+    // email, is still in the driver email notification.
     b.flightNumber ? `*Πτήση:* ${b.flightNumber}` : '',
     ``,
     `*Όχημα:* ${VEHICLE_LABELS[b.vehicle] ?? b.vehicle}`,
