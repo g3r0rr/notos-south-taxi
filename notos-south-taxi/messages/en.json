@@ -118,10 +118,6 @@
     "cancellation": "Cancellation Policy",
     "data_controller": "Data Controller: Martin Preci"
   },
-  "cookies": {
-    "text": "We use only essential cookies needed for your booking and language choice. No tracking, no advertising.",
-    "accept": "OK"
-  },
   "booking": {
     "successTitle": "You're all set",
     "successProcessing": "Confirming your payment…",
