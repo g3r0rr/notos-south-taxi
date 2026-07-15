@@ -102,13 +102,20 @@ email they booked with.
 ## 9. Technical and organisational security measures (Art. 32)
 
 - Payment card data never touches our systems; it is handled by Viva Wallet (PCI-DSS).
-- HTTPS/HSTS enforced; a Content-Security-Policy and standard security headers are set
-  on every route.
+- Served over HTTPS (Vercel platform).
 - Booking data is short-lived (48h) and auto-expires; no long-term customer database.
-- The booking API validates and length-caps all input, rejects oversized bodies, and
-  uses a honeypot against bots.
-- Self-service booking edit/cancel is gated on booking reference plus matching email.
+- All booking input is validated and length-capped server-side (Zod schema); the fare is
+  always recomputed server-side and never trusted from the client.
+- Rate limiting (per-IP, Upstash-backed) on booking creation, edit, cancellation, and the
+  address-autocomplete proxy, plus a per-booking cap on driver re-notifications, to blunt
+  enumeration, notification spam, and paid-API cost abuse. Fails open if Upstash is down.
+- Self-service booking edit/cancel is gated on booking reference plus matching email, with
+  an identical "not found" response for an unknown booking and a wrong email so neither is
+  confirmed.
 - Secrets (API keys, tokens) are stored as environment variables, not in the codebase.
+- Recommended follow-up (not yet in place here): add HSTS, a Content-Security-Policy, and
+  standard security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy) via
+  `next.config.js`, as the sibling portfolio site already does.
 
 ---
 

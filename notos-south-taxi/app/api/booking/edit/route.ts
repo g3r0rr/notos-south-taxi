@@ -4,6 +4,7 @@ import { db, type BookingRow } from '@/lib/db';
 import { vehicleNeedsAdvanceNotice, VAN_MIN_NOTICE_MINUTES } from '@/lib/pricing';
 import { sendCustomerConfirmation, sendDriverNotification, type CustomerEmailPayload } from '@/lib/integrations/email';
 import { notifyDriverNewBooking } from '@/lib/integrations/whatsapp';
+import { rateLimit, clientIp, LIMITS } from '@/lib/ratelimit';
 
 /**
  * Customer-facing self-service edit for details that don't affect price
@@ -53,6 +54,10 @@ function editableFields(r: BookingRow) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!(await rateLimit(LIMITS.bookingEdit, clientIp(req)))) {
+    return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
+  }
+
   const body = await req.json().catch(() => null);
   const parsed = Schema.safeParse(body);
   if (!parsed.success) {
@@ -120,7 +125,11 @@ export async function POST(req: NextRequest) {
   // Only re-notify if the original notifications already went out (i.e. the
   // booking is paid and confirmed); a still-pending booking will get its
   // first notification with the up-to-date data once payment clears.
-  if (updated.status === 'paid' && updated.notifiedAt) {
+  // Per-booking throttle (on top of the IP limit): even a legitimate ID+email
+  // holder can't spam the driver by editing in a loop, at most one driver
+  // re-notification per booking per 5 minutes. Fails open if Upstash is down.
+  const mayNotify = await rateLimit(LIMITS.editNotify, `notify:${updated.id}`);
+  if (updated.status === 'paid' && updated.notifiedAt && mayNotify) {
     await Promise.all([
       sendCustomerConfirmation(payload, true).catch((e) => console.error('[edit] customer email failed:', e)),
       sendDriverNotification(payload, true).catch((e) => console.error('[edit] driver email failed:', e)),
