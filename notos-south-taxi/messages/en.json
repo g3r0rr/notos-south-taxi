@@ -128,7 +128,29 @@
     "successBody": "Thanks {name} — booking {id} is confirmed. Your driver has been notified by WhatsApp and will message you before pickup. The remaining balance (€{remainder}) is paid in cash on the day.",
     "successCta": "Back to home",
     "pendingTitle": "Just a moment",
-    "pendingBody": "Your payment is being verified. This page will update on its own — please don't close it for the next minute or so."
+    "pendingBody": "Your payment is being verified. This page will update on its own — please don't close it for the next minute or so.",
+    "edit": {
+      "toggle": "Need to change something?",
+      "toggleHint": "Update pickup time, flight number, passengers, luggage, child seats, notes or phone",
+      "emailPrompt": "Confirm the email you booked with to load your details",
+      "emailLabel": "Email",
+      "loadBtn": "Load my booking",
+      "loadError": "We couldn't find a booking with that reference and email.",
+      "windowPassed": "Changes aren't available online within 24 hours of pickup. Please contact us directly:",
+      "cancelledNotice": "This booking has been cancelled.",
+      "pickupLabel": "Pickup date & time",
+      "flightLabel": "Flight number",
+      "notesLabel": "Notes",
+      "passengersLabel": "Passengers",
+      "luggageLabel": "Luggage",
+      "childSeatsLabel": "Child seats",
+      "phoneLabel": "Phone",
+      "routeNotice": "Route and vehicle can't be changed online (they affect the price already charged). Call or WhatsApp us to change these.",
+      "saveBtn": "Save changes",
+      "saved": "Updated — the driver has been notified of the new details.",
+      "saveError": "Couldn't save your changes. Please try again or contact us directly.",
+      "vanNotice": "Vans and coaches need at least 1 hour notice — pick a later time or contact us directly."
+    }
   },
   "legal": {
     "termsTitle": "Terms & Conditions",
