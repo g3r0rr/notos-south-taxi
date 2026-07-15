@@ -7,10 +7,8 @@ const withNextIntl = createNextIntlPlugin('./i18n.ts');
 // loads: Google Fonts (fonts.googleapis.com stylesheet + fonts.gstatic.com font
 // files, both referenced from app/layout.tsx) and Vercel Analytics (served
 // first-party from /_vercel/* on Vercel, with va.vercel-scripts.com /
-// vitals.vercel-insights.com as CDN fallbacks). Images are all self-hosted
-// (/photos, /brand) except one hotlinked Unsplash hero-card background on the
-// homepage, so img-src is scoped to 'self' plus that single host; self-host
-// that image and it can drop to "'self' data:". Viva Wallet, Geoapify and
+// vitals.vercel-insights.com as CDN fallbacks). All images are self-hosted
+// (/photos, /brand), so img-src is 'self' data: only. Viva Wallet, Geoapify and
 // Google Maps are only ever called server-side, so they need no browser
 // directives.
 //
@@ -24,7 +22,7 @@ const csp = [
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  "img-src 'self' data: https://images.unsplash.com",
+  "img-src 'self' data:",
   "font-src 'self' https://fonts.gstatic.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
