@@ -119,6 +119,10 @@ email they booked with.
 - Self-service booking edit/cancel is gated on booking reference plus matching email, with
   an identical "not found" response for an unknown booking and a wrong email so neither is
   confirmed.
+- Production builds strip `console.*` (except error/warn), so customer email and booking /
+  payment identifiers are not written into server logs.
+- Cookies are limited to the locale preference and an optional maintenance-bypass token,
+  both marked Secure in production; no tracking or advertising cookies are set.
 - Secrets (API keys, tokens) are stored as environment variables, not in the codebase.
 
 ---

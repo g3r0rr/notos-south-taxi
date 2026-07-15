@@ -36,11 +36,18 @@ const securityHeaders = [
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()' },
+  { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
   { key: 'X-DNS-Prefetch-Control', value: 'on' }
 ];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Strip console.* from production builds so booking/payment logs (which
+  // include customer email and Viva/booking identifiers) never land in
+  // server logs. error/warn are kept for genuine error monitoring.
+  compiler: {
+    removeConsole: { exclude: ['error', 'warn'] }
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },

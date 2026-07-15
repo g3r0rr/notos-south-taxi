@@ -49,7 +49,9 @@ export default async function HomePage({ params: { locale } }: { params: { local
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        // Data is all static SITE config (no user input), but escape "<" as
+        // defence-in-depth so a stray value can never break out of the script tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       {/* HERO */}
       <section className="relative overflow-hidden">
