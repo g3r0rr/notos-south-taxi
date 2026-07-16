@@ -202,7 +202,7 @@ function RouteCard({ d, price, locale, idx = 0 }: { d: Destination; price?: numb
     <Link href={`/${locale}/destinations/${d.slug}`} className="group overflow-hidden rounded-2xl bg-white shadow-card transition hover:-translate-y-0.5 hover:shadow-lg">
       <div className="relative h-44 overflow-hidden">
         <div className="absolute inset-0 transition group-hover:scale-105">
-          <RotatingPhotos images={d.images} alt={d.name[locale]} interval={4500} startDelay={idx * 600} />
+          <RotatingPhotos images={d.images} alt={d.name[locale]} interval={4500} startDelay={idx * 600} priority={idx < 3} />
         </div>
         <div className="absolute inset-x-3 top-3 inline-flex w-fit rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-notos-blue-deep">
           {locale === 'el' ? 'από' : 'from'} €{price ?? '—'}

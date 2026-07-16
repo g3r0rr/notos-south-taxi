@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 interface Props {
   images: string[];
@@ -9,37 +10,32 @@ interface Props {
   interval?: number;
   /** ms staggered delay so cards don't all flip together */
   startDelay?: number;
+  /** first image loads eagerly + high priority (above-the-fold usage) */
+  priority?: boolean;
+  /** sizes hint for next/image's responsive srcset (defaults to a typical grid card) */
+  sizes?: string;
 }
 
 /**
- * Crossfading photo rotator. Pre-loads all images so the transition is smooth,
- * then advances `current` on a timer. Pauses when the tab is hidden.
+ * Crossfading photo rotator. Uses next/image so each viewport gets a properly
+ * sized, format-negotiated (WebP/AVIF) image instead of the full-resolution
+ * source, then advances `current` on a timer once the active image loads.
+ * Pauses when the tab is hidden.
  */
 export default function RotatingPhotos({
   images,
   alt,
   interval = 4000,
-  startDelay = 0
+  startDelay = 0,
+  priority = false,
+  sizes = '(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw'
 }: Props) {
   const [current, setCurrent] = useState(0);
-  const [ready, setReady] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(0);
 
-  // Preload all images so the crossfade actually fades
-  useEffect(() => {
-    let cancelled = false;
-    let loaded = 0;
-    images.forEach((src) => {
-      const img = new Image();
-      img.onload = img.onerror = () => {
-        loaded += 1;
-        if (loaded === images.length && !cancelled) setReady(true);
-      };
-      img.src = src;
-    });
-    return () => { cancelled = true; };
-  }, [images]);
+  const ready = loadedCount > 0;
 
-  // Rotate
+  // Rotate once at least the first image has loaded; don't block on all of them.
   useEffect(() => {
     if (!ready || images.length < 2) return;
     let timer: ReturnType<typeof setTimeout>;
@@ -59,11 +55,21 @@ export default function RotatingPhotos({
         <div
           key={src}
           aria-hidden={i !== current}
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1200ms] ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-[1200ms] ease-in-out ${
             i === current ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{ backgroundImage: `url(${src})` }}
-        />
+        >
+          <Image
+            src={src}
+            alt={i === 0 ? alt : ''}
+            fill
+            sizes={sizes}
+            className="object-cover"
+            priority={priority && i === 0}
+            loading={i === current ? undefined : 'lazy'}
+            onLoad={() => setLoadedCount((c) => c + 1)}
+          />
+        </div>
       ))}
       {/* SR-only alt text for accessibility */}
       <span className="sr-only">{alt}</span>

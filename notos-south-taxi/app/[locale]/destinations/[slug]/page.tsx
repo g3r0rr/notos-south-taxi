@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {getTranslations, setRequestLocale } from 'next-intl/server';
 import { DESTINATIONS, getDestination } from '@/lib/site-config';
 import { FIXED_ROUTES, extractDayPrice } from '@/lib/pricing';
@@ -26,7 +27,14 @@ export default async function DestinationPage({
   return (
     <article>
       <div className="relative h-[44vh] min-h-[320px] w-full overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${d.images[0]})` }} />
+        <Image
+          src={d.images[0]}
+          alt={d.name[locale]}
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-notos-blue-deep/85 via-notos-blue-deep/40 to-transparent" />
         <div className="relative mx-auto flex h-full max-w-5xl flex-col justify-end px-5 pb-10 sm:px-8">
           <div className="text-xs uppercase tracking-[0.18em] text-notos-yellow">
